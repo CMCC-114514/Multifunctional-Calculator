@@ -49,6 +49,8 @@
 
 #### Multifunctional-Calculator v0.1.0
 
-为程序添加了GUI
+添加了功能：程序现在有GUI了
 
-爱来自kk3TWT
+#### Multifunctional-Calculator v0.1.1
+
+添加了功能：公农历转换（支持1900年1月1日到2099年12月31日）
