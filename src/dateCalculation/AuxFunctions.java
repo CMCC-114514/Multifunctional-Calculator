@@ -97,7 +97,7 @@ public class AuxFunctions {
         return days + d.day - 31;
     }
 
-    private static final long[] LUNAR_INFO = LunarDate.LUNAR_INFO;
+    private static final int[] LUNAR_INFO = LunarDate.LUNAR_INFO;
 
     public static int lunarYearDays(int y) {
         int sum = 348;
@@ -109,7 +109,7 @@ public class AuxFunctions {
     }
 
     public static int lunarLeapMonth(int y) {
-        return (int)(LUNAR_INFO[y - 1900] & 0xf);
+        return (LUNAR_INFO[y - 1900] & 0xf);
     }
 
     public static int lunarLeapDays(int y) {

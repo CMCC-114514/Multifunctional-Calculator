@@ -166,26 +166,30 @@ public class Calculators {
 
         int leap = AuxFunctions.lunarLeapMonth(year);
         boolean isLeap = false;
-        int month;
+        int month = 1;
 
-        for (month = 1; month <= 12 && offset > 0; month++) {
+        while (month <= 12 && offset > 0) {
             int days;
+
             if (isLeap) {
-                days = AuxFunctions.lunarLeapDays(year);
-                isLeap = false;
+                days = AuxFunctions.lunarLeapDays(year);   // 闰月
             } else {
                 days = AuxFunctions.lunarMonthDays(year, month);
             }
-            offset -= days;
-            if (month == leap && !isLeap) {
-                isLeap = true;
-                month--;
-            }
-        }
 
-        if (offset < 0) {
-            offset += AuxFunctions.lunarMonthDays(year, month - 1);
-            month--;
+            offset -= days;
+
+            // ====== 关键：处理闰月状态切换 ======
+            if (leap == month && !isLeap) {
+                // 下一个循环进入闰月
+                isLeap = true;
+            } else {
+                // 离开闰月 或 普通月份
+                if (isLeap) {
+                    isLeap = false;   // 闰月结束
+                }
+                month++;          // 进入下一个正常月
+            }
         }
 
         return new LunarDate(year, month, offset + 1, isLeap);
