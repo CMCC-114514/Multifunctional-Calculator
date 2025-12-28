@@ -9,19 +9,14 @@
 #### Date-Calculator v0.0.1
 
 实现了以下三个功能：
-
 1. 天数转日期：XX天转为年月日格式
-
 2. 日期推算：目前只能向后推算，就是“X年X月X日过后AAA天是Y年Y月Y日”
-
 3. 日期间隔计算：日期A到日期B之间有多少天
 
 #### Date-Calculator v0.0.2
 
 增加了功能：
-
 1. osu！mania的pp计算器
-
 2. 实现了日期的向前推算，输入负数天数就能推算
 
 目前发现的问题：
@@ -43,14 +38,21 @@
 
 #### Multifunctional-Calculator v0.0.4
 
-将项目名称改为了“多功能计算器”而不是“日期计算器”
+说明：将项目名称改为了“多功能计算器”而不是“日期计算器”
 
 移除了功能：osu！mania的pp计算器
 
 #### Multifunctional-Calculator v0.1.0
 
-添加了功能：程序现在有GUI了
+添加了GUI：程序现在有GUI了
 
 #### Multifunctional-Calculator v0.1.1
 
 添加了功能：公农历转换（支持1900年1月1日到2099年12月31日）
+
+#### Multifunctional-Calculator v0.1.2
+
+添加了功能：进制转换
+
+发现了BUG： 
+1. 公农历转换在某些日期会出现错误，出现错误的日期范围：2025年6月26日-2026年2月16日

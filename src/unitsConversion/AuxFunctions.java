@@ -65,4 +65,15 @@ public class AuxFunctions {
         }
         return std;
     }
+
+    public static int getNumSystemStd(byte choose, String num) {
+        int std = 0;
+        switch (choose) {
+            case 1 -> std = Integer.parseInt(num, 2);
+            case 2 -> std = Integer.parseInt(num, 8);
+            case 3 -> std = Integer.parseInt(num);
+            case 4 -> std = Integer.parseInt(num, 16);
+        }
+        return std;
+    }
 }

@@ -12,7 +12,7 @@ public class Calculators {
         //如果numOfDays大于365，算整年份
         int year = 0;
         while (numOfDays >= 365) {
-            int numOfYear = AuxFunctions.yearCheck(startYear) ? 366 : 365;
+            int numOfYear = AuxFunctions.isLeapYear(startYear) ? 366 : 365;
             numOfDays -= numOfYear;
             startYear++;
             year++;
@@ -49,7 +49,7 @@ public class Calculators {
 
             //预处理1：将日期调整为整年
             //将日期调整至当前年份的12月31日
-            int dayOfYear = AuxFunctions.yearCheck(date.year) ? 366 : 365;  //一年的天数
+            int dayOfYear = AuxFunctions.isLeapYear(date.year) ? 366 : 365;  //一年的天数
 
             int dayCount = AuxFunctions.getDayCount(date);   //当前年份已经过去的天数
 
@@ -62,7 +62,7 @@ public class Calculators {
 
             //如果天数大于365，将天数减到小于365
             while (numOfDays >= 365) {
-                dayOfYear = AuxFunctions.yearCheck(date.year) ? 366 : 365;
+                dayOfYear = AuxFunctions.isLeapYear(date.year) ? 366 : 365;
                 numOfDays -= dayOfYear;
                 date.year--;
             }
@@ -83,7 +83,7 @@ public class Calculators {
             while (numOfDays >= 365) {
 
                 //第一步：将days减去当前年份的剩余天数
-                int dayOfYear = AuxFunctions.yearCheck(date.year) ? 366 : 365;  //一年的天数
+                int dayOfYear = AuxFunctions.isLeapYear(date.year) ? 366 : 365;  //一年的天数
 
                 int dayCount = AuxFunctions.getDayCount(date);   //当前年份已经过去的天数
 
@@ -133,7 +133,7 @@ public class Calculators {
 
         //调月
         if (startDate.month > endDate.month) {      //月份同理
-            dateInterval += AuxFunctions.yearCheck(startDate.year + 1) ? 366 : 365 - AuxFunctions.getDayCount(endDate, startDate);
+            dateInterval += AuxFunctions.isLeapYear(startDate.year + 1) ? 366 : 365 - AuxFunctions.getDayCount(endDate, startDate);
             startDate.year++;
         } else {
             dateInterval += AuxFunctions.getDayCount(startDate, endDate);
@@ -142,9 +142,52 @@ public class Calculators {
 
         //最后计算整年的天数
         for (int i = startDate.year; i < endDate.year; i++) {
-            dateInterval += AuxFunctions.yearCheck(i) ? 366 : 365;
+            dateInterval += AuxFunctions.isLeapYear(i) ? 366 : 365;
         }
 
         return dateInterval;
+    }
+
+    //////////////////////////////////////////////////////
+
+    //计算器4：公历转农历
+    //输入公历日期，将其转换为中文农历日期
+    //支持转换范围是1900年到2099年
+    public static LunarDate solarToLunar(Date date) {
+        int offset = AuxFunctions.daysFromBase(date);
+
+        int year;
+        for (year = 1900; year < 2100 && offset > 0; year++) {
+            offset -= AuxFunctions.lunarYearDays(year);
+        }
+        if (offset < 0) {
+            offset += AuxFunctions.lunarYearDays(--year);
+        }
+
+        int leap = AuxFunctions.lunarLeapMonth(year);
+        boolean isLeap = false;
+        int month;
+
+        for (month = 1; month <= 12 && offset > 0; month++) {
+            int days;
+            if (isLeap) {
+                days = AuxFunctions.lunarLeapDays(year);
+                isLeap = false;
+            } else {
+                days = AuxFunctions.lunarMonthDays(year, month);
+            }
+            offset -= days;
+            if (month == leap && !isLeap) {
+                isLeap = true;
+                month--;
+            }
+        }
+
+        if (offset < 0) {
+            offset += AuxFunctions.lunarMonthDays(year, month - 1);
+            month--;
+        }
+
+        return new LunarDate(year, month, offset + 1, isLeap);
     }
 }

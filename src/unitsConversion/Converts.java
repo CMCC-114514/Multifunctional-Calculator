@@ -30,6 +30,10 @@ public class Converts {
             "两(liang)", "斤(jin)", "磅(lb)", "盎司(oz)"
     };
 
+    public static final String[] NUM_SYSTEM_UNITS = {
+            "二进制", "八进制", "十进制", "十六进制"
+    };
+
     //换算方法1：长度换算
     public static double[] length(byte choose, double num) {
 
@@ -67,5 +71,14 @@ public class Converts {
 
         //计算结果
         return new double[]{std*1e3, std, std/1e3, std*20, std*2, std*2.2046, std*35.274};
+    }
+
+    //换算方法5：进制换算
+    public static String[] numSystem(byte choose, String num) {
+        //将选择的进制转化为标准进制
+        int std = AuxFunctions.getNumSystemStd(choose, num);
+
+        //计算结果
+        return new String[]{Integer.toBinaryString(std), Integer.toOctalString(std), Integer.toString(std), Integer.toHexString(std)};
     }
 }

@@ -431,7 +431,7 @@ public class DateCalculatorGUI extends JFrame {
             }
 
             Date solarDate = new Date(year, month, day);
-            LunarSolarConverter.LunarDate lunarDate = LunarSolarConverter.solarToLunar(solarDate);
+            LunarDate lunarDate = Calculators.solarToLunar(solarDate);
 
             lunarResult.setText(String.format("公历日期: %d年%d月%d日\n\n农历日期:\n%s",
                     year, month, day, lunarDate.toChineseString()));
