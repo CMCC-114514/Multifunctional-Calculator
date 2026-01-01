@@ -6,7 +6,7 @@ public class AuxFunctions {
 
     //辅助函数1：平年闰年判定
     //平年返回false，闰年返回true
-    public static boolean isLeapYear(int year) {
+    public static boolean yearCheck(int year) {
 
         //闰年两种形式：
         //1.能被4整除的非世纪年
@@ -25,7 +25,7 @@ public class AuxFunctions {
 
             //二月
             //闰年返回29天，平年返回28天
-            case 2 -> isLeapYear(thisYear) ? 29 : 28;
+            case 2 -> yearCheck(thisYear) ? 29 : 28;
 
             //输入了错误的月份就输出-1，表示错误
             default -> -1;
@@ -60,12 +60,6 @@ public class AuxFunctions {
     //处理月份和天数溢出
     public static void adjustDate(Date date) {
 
-//        // 调整天数溢出到月份
-//        while (date.day > getDayOfMonth(date.month, date.year)) {
-//            date.day -= getDayOfMonth(date.month, date.year);
-//            date.month++;
-//        }
-
         // 调整月份溢出到年份
         while (date.month > 12) {
             date.month -= 12;
@@ -81,43 +75,5 @@ public class AuxFunctions {
             }
             date.day += getDayOfMonth(date.month, date.year);
         }
-    }
-
-    //辅助函数5：计算从基日期开始过了多少天
-    public static int daysFromBase(Date d) {
-        int days = 0;
-        for (int y = 1900; y < d.year; y++) {
-            days += isLeapYear(y) ? 366 : 365;
-        }
-        int[] md = {31,28,31,30,31,30,31,31,30,31,30,31};
-        if (isLeapYear(d.year)) md[1] = 29;
-        for (int m = 1; m < d.month; m++) {
-            days += md[m - 1];
-        }
-        return days + d.day - 31;
-    }
-
-    private static final int[] LUNAR_INFO = LunarDate.LUNAR_INFO;
-
-    public static int lunarYearDays(int y) {
-        int sum = 348;
-        long info = LUNAR_INFO[y - 1900];
-        for (int i = 0x8000; i > 0x8; i >>= 1) {
-            if ((info & i) != 0) sum++;
-        }
-        return sum + lunarLeapDays(y);
-    }
-
-    public static int lunarLeapMonth(int y) {
-        return (LUNAR_INFO[y - 1900] & 0xf);
-    }
-
-    public static int lunarLeapDays(int y) {
-        return lunarLeapMonth(y) != 0 ?
-                ((LUNAR_INFO[y - 1900] & 0x10000) != 0 ? 30 : 29) : 0;
-    }
-
-    public static int lunarMonthDays(int y, int m) {
-        return ((LUNAR_INFO[y - 1900] & (0x10000 >> m)) != 0) ? 30 : 29;
     }
 }

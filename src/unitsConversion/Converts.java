@@ -7,7 +7,8 @@ public class Converts {
     public static final String[] LENGTH_UNITS = {
             "毫米(mm)", "厘米(cm)", "米(m)", "千米(km)",
             "英寸(in)", "英尺(ft)", "英里(mi)",
-            "尺(chi)", "寸(cun)", "分(fen)", "里(li)"
+            "分(fen)", "寸(cun)", "尺(chi)", "里(li)",
+            "海里(n mi)", "码(yd)"
     };
 
     // 面积单位名称数组
@@ -30,8 +31,19 @@ public class Converts {
             "两(liang)", "斤(jin)", "磅(lb)", "盎司(oz)"
     };
 
+    // 进制单位名称数组
     public static final String[] NUM_SYSTEM_UNITS = {
             "二进制", "八进制", "十进制", "十六进制"
+    };
+
+    // 速度单位名称数组
+    public static final String[] SPEED_UNITS = {
+            "米/秒(m/s)", "千米/小时(km/h)", "英里/小时(mph)", "节(knots)"
+    };
+
+    // 温度单位名称数组
+    public static final String[] TEMPERATURE_UNITS = {
+            "摄氏度(C)", "华氏度(F)", "开尔文(K)"
     };
 
     //换算方法1：长度换算
@@ -41,7 +53,7 @@ public class Converts {
         double std = AuxFunctions.getLengthStd(choose, num);
 
         //计算结果
-        return new double[]{std*1e3, std*1e2, std, std/1e3, std*39.37, std*3.281, std/1609.347, std*300, std*30, std*3, std/500};
+        return new double[]{std*1e3, std*1e2, std, std/1e3, std*39.37, std*3.281, std/1609.347, std*300, std*30, std*3, std/500, std/0.9144, std/1852};
     }
 
     //换算方法2：面积换算
@@ -80,5 +92,23 @@ public class Converts {
 
         //计算结果
         return new String[]{Integer.toBinaryString(std), Integer.toOctalString(std), Integer.toString(std), Integer.toHexString(std)};
+    }
+
+    //换算方法6：速度换算
+    public static double[] speed(byte choose, double num) {
+        //将选择的单位转化为标准单位
+        double std = AuxFunctions.getSpeedStd(choose, num);
+
+        //计算结果
+        return new double[]{std, std*3.6, std/0.44704, std/0.514444};
+    }
+
+    //换算方法7：温度换算
+    public static double[] temperature(byte choose, double num) {
+        //将选择的单位转化为标准单位
+        double std = AuxFunctions.getTemperatureStd(choose, num);
+
+        //计算结果
+        return new double[]{std, std*1.8+32, std+273.15};
     }
 }

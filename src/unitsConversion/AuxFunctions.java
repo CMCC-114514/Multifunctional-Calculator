@@ -3,6 +3,7 @@ package unitsConversion;
 public class AuxFunctions {
     private AuxFunctions(){}
 
+    //面积标准单位
     public static double getAreaStd(byte choose, double num) {
         double std = 0;    //标准单位（平方米）
         switch (choose) {               //将对应单位转换成平方米
@@ -22,13 +23,14 @@ public class AuxFunctions {
         return std;
     }
 
+    //长度标准单位
     public static double getLengthStd(byte choose, double num) {
         double std = 0;    //标准单位（米）
-        switch (choose) {               //将对应单位转换成米
+        switch (choose) {               //将对应单位转换成米（num是要转换单位的数值）
             case 1 -> std = num / 1e3;      //毫米
             case 2 -> std = num / 1e2;      //厘米
             case 3 -> std = num;            //米
-            case 4 -> std = num * 1e3;      //公里
+            case 4 -> std = num * 1e3;      //千米
             case 5 -> std = num / 39.37;    //英寸
             case 6 -> std = num / 3.281;    //英尺
             case 7 -> std = num * 1609.347; //英里
@@ -36,10 +38,13 @@ public class AuxFunctions {
             case 9 -> std = num / 30;       //寸
             case 10 -> std = num / 3;       //尺
             case 11 -> std = num * 500;     //里
+            case 12 -> std = num * 0.9144;  //码
+            case 13 -> std = num * 1852;    //海里
         }
         return std;
     }
 
+    //体积标准单位
     public static double getVolumeStd(byte choose, double num) {
         double std = 0;    //标准单位（立方米）
         switch (choose) {               //将对应单位转换成立方米
@@ -52,6 +57,7 @@ public class AuxFunctions {
         return std;
     }
 
+    //质量标准单位
     public static double getMassStd(byte choose, double num) {
         double std = 0;    //标准单位（千克）
         switch (choose) {               //将对应单位转换成千克
@@ -66,6 +72,7 @@ public class AuxFunctions {
         return std;
     }
 
+    //标准进制
     public static int getNumSystemStd(byte choose, String num) {
         int std = 0;
         switch (choose) {
@@ -73,6 +80,29 @@ public class AuxFunctions {
             case 2 -> std = Integer.parseInt(num, 8);
             case 3 -> std = Integer.parseInt(num);
             case 4 -> std = Integer.parseInt(num, 16);
+        }
+        return std;
+    }
+
+    //速度标准单位
+    public static double getSpeedStd(byte choose, double num) {
+        double std = 0;
+        switch (choose) {
+            case 1 -> std = num;
+            case 2 -> std = num / 3.6;
+            case 3 -> std = num * 0.44704;
+            case 4 -> std = num * 0.514444;
+        }
+        return std;
+    }
+
+    //温度标准单位
+    public static double getTemperatureStd(byte choose, double num) {
+        double std = 0;
+        switch (choose) {
+            case 1 -> std = num;
+            case 2 -> std = (num - 32) / 1.8;
+            case 3 -> std = num - 273.15;
         }
         return std;
     }
