@@ -60,10 +60,13 @@ public class GeometricCalculatorGUI extends JFrame {
         mainPanel.add(tabbedPane, BorderLayout.CENTER);
 
         // 添加状态栏
-        JLabel statusLabel = new JLabel("请输入数值进行计算，所有输入必须为正数", SwingConstants.CENTER);
-        statusLabel.setBorder(BorderFactory.createEtchedBorder());
-        statusLabel.setFont(new Font("宋体", Font.PLAIN, 12));
-        mainPanel.add(statusLabel, BorderLayout.SOUTH);
+        JLabel infoLabel = new JLabel(
+                "<html><center>输入数值进行计算，所有的输入都必须为整数</center></html>",
+                SwingConstants.CENTER
+        );
+        infoLabel.setFont(new Font("宋体", Font.PLAIN, 12));
+        infoLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        mainPanel.add(infoLabel, BorderLayout.SOUTH);
     }
 
     private void createRectanglePanel() {

@@ -14,7 +14,6 @@ public class DateCalculatorGUI extends JFrame {
     // 天数转日期面板
     private JPanel conversionPanel;
     private JTextField daysField;
-    private JTextField startYearField;
     private JButton convertButton;
     private JTextArea conversionResult;
 
@@ -29,7 +28,7 @@ public class DateCalculatorGUI extends JFrame {
 
     // 日期间隔面板
     private JPanel intervalPanel;
-    private JTextField startYearField2;
+    private JTextField startYearField;
     private JTextField startMonthField;
     private JTextField startDayField;
     private JTextField endYearField;
@@ -37,6 +36,14 @@ public class DateCalculatorGUI extends JFrame {
     private JTextField endDayField;
     private JButton intervalButton;
     private JTextArea intervalResult;
+
+    // 公农历转换面板
+    private JPanel solarToLunarPanel;
+    private JTextField solarYearField;
+    private JTextField solarMonthField;
+    private JTextField solarDayField;
+    private JButton toLunarButton;
+    private JTextArea lunarResult;
 
     public DateCalculatorGUI() {
         setTitle("日期计算器");
@@ -54,22 +61,28 @@ public class DateCalculatorGUI extends JFrame {
         mainPanel = new JPanel(new BorderLayout());
         tabbedPane = new JTabbedPane();
 
-        // 创建三个功能面板
+        // 创建四个功能面板
         createConversionPanel();
         createCalculationPanel();
         createIntervalPanel();
+        createSolarToLunarPanel();
 
         tabbedPane.addTab("天数转日期", conversionPanel);
         tabbedPane.addTab("日期推算", calculationPanel);
         tabbedPane.addTab("日期间隔", intervalPanel);
+        tabbedPane.addTab("公农历转换", solarToLunarPanel);
 
         mainPanel.add(tabbedPane, BorderLayout.CENTER);
 
         // 添加状态栏
-        JLabel statusLabel = new JLabel("可能会有1到3天的误差，日期间隔计算时起始日期必须在结束日期之前", SwingConstants.CENTER);
-        statusLabel.setBorder(BorderFactory.createEtchedBorder());
-        statusLabel.setFont(new Font("宋体", Font.PLAIN, 12));
-        mainPanel.add(statusLabel, BorderLayout.SOUTH);
+        JLabel infoLabel = new JLabel(
+                "<html><center>计算结果可能有1~3天的误差，计算日期间隔时起始日期必须早于结束日期<br>" +
+                        "公农历换算支持范围为1900年~2099年</center></html>",
+                SwingConstants.CENTER
+        );
+        infoLabel.setFont(new Font("宋体", Font.PLAIN, 12));
+        infoLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        mainPanel.add(infoLabel, BorderLayout.SOUTH);
     }
 
     private void createConversionPanel() {
@@ -77,17 +90,12 @@ public class DateCalculatorGUI extends JFrame {
         conversionPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // 输入面板
-        JPanel inputPanel = new JPanel(new GridLayout(3, 2, 10, 10));
+        JPanel inputPanel = new JPanel(new GridLayout(2, 2, 10, 10));
         inputPanel.setBorder(new TitledBorder("输入参数"));
 
         inputPanel.add(new JLabel("天数:"));
         daysField = new JTextField();
         inputPanel.add(daysField);
-
-//        inputPanel.add(new JLabel("起始年份:"));
-          startYearField = new JTextField();
-          startYearField.setText("1");
-//        inputPanel.add(startYearField);
 
         convertButton = new JButton("转换");
         inputPanel.add(new JLabel(""));
@@ -177,9 +185,9 @@ public class DateCalculatorGUI extends JFrame {
         inputPanel.setBorder(new TitledBorder("输入日期"));
 
         inputPanel.add(new JLabel("开始年份:"));
-        startYearField2 = new JTextField();
-        startYearField2.setText("2000");
-        inputPanel.add(startYearField2);
+        startYearField = new JTextField();
+        startYearField.setText("2000");
+        inputPanel.add(startYearField);
 
         inputPanel.add(new JLabel("开始月份:"));
         startMonthField = new JTextField();
@@ -212,7 +220,7 @@ public class DateCalculatorGUI extends JFrame {
 
         // 结果面板
         JPanel resultPanel = new JPanel(new BorderLayout());
-        resultPanel.setBorder(new TitledBorder("间隔结果"));
+        resultPanel.setBorder(new TitledBorder("间隔计算结果"));
 
         intervalResult = new JTextArea(6, 30);
         intervalResult.setEditable(false);
@@ -232,6 +240,55 @@ public class DateCalculatorGUI extends JFrame {
         });
     }
 
+    private void createSolarToLunarPanel() {
+        solarToLunarPanel = new JPanel(new BorderLayout(10, 10));
+        solarToLunarPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        // 输入面板
+        JPanel inputPanel = new JPanel(new GridLayout(4, 2, 10, 10));
+        inputPanel.setBorder(new TitledBorder("输入公历日期"));
+
+        inputPanel.add(new JLabel("年份:"));
+        solarYearField = new JTextField();
+        solarYearField.setText("2000");
+        inputPanel.add(solarYearField);
+
+        inputPanel.add(new JLabel("月份:"));
+        solarMonthField = new JTextField();
+        solarMonthField.setText("1");
+        inputPanel.add(solarMonthField);
+
+        inputPanel.add(new JLabel("日期:"));
+        solarDayField = new JTextField();
+        solarDayField.setText("1");
+        inputPanel.add(solarDayField);
+
+        toLunarButton = new JButton("转换");
+        inputPanel.add(new JLabel(""));
+        inputPanel.add(toLunarButton);
+
+        // 结果面板
+        JPanel resultPanel = new JPanel(new BorderLayout());
+        resultPanel.setBorder(new TitledBorder("转换结果"));
+
+        lunarResult = new JTextArea(8, 30);
+        lunarResult.setEditable(false);
+        lunarResult.setFont(new Font("宋体", Font.PLAIN, 14));
+        JScrollPane scrollPane = new JScrollPane(lunarResult);
+        resultPanel.add(scrollPane, BorderLayout.CENTER);
+
+        solarToLunarPanel.add(inputPanel, BorderLayout.NORTH);
+        solarToLunarPanel.add(resultPanel, BorderLayout.CENTER);
+
+        // 添加事件监听
+        toLunarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                convertSolarToLunar();
+            }
+        });
+    }
+
     private void setupLayout() {
         // 设置统一的组件样式
         Font labelFont = new Font("宋体", Font.BOLD, 14);
@@ -240,19 +297,19 @@ public class DateCalculatorGUI extends JFrame {
         convertButton.setFont(buttonFont);
         calculateButton.setFont(buttonFont);
         intervalButton.setFont(buttonFont);
+        toLunarButton.setFont(buttonFont);
     }
 
     private void convertDaysToDate() {
         try {
             int days = Integer.parseInt(daysField.getText().trim());
-            int startYear = Integer.parseInt(startYearField.getText().trim());
 
             if (days < 0) {
                 conversionResult.setText("错误：天数不能为负数！");
                 return;
             }
 
-            Date result = Calculators.Conversion(days, startYear);
+            Date result = Calculators.Conversion(days, 1);
             conversionResult.setText(String.format("输入天数: %d\n转换结果:\n%d年%d个月%d天",
                     days, result.year, result.month, result.day));
 
@@ -299,7 +356,7 @@ public class DateCalculatorGUI extends JFrame {
 
     private void calculateInterval() {
         try {
-            int startYear = Integer.parseInt(startYearField2.getText().trim());
+            int startYear = Integer.parseInt(startYearField.getText().trim());
             int startMonth = Integer.parseInt(startMonthField.getText().trim());
             int startDay = Integer.parseInt(startDayField.getText().trim());
             int endYear = Integer.parseInt(endYearField.getText().trim());
@@ -344,6 +401,42 @@ public class DateCalculatorGUI extends JFrame {
             intervalResult.setText("错误：请输入有效的数字！");
         } catch (Exception e) {
             intervalResult.setText("错误：" + e.getMessage());
+        }
+    }
+
+    private void convertSolarToLunar() {
+        try {
+            int year = Integer.parseInt(solarYearField.getText().trim());
+            int month = Integer.parseInt(solarMonthField.getText().trim());
+            int day = Integer.parseInt(solarDayField.getText().trim());
+
+            // 验证日期有效性
+            if (year < 1900 || year > 2099) {
+                calculationResult.setText("错误：年份必须在1900-2099之间！");
+                return;
+            }
+
+            if (month < 1 || month > 12) {
+                calculationResult.setText("错误：月份必须在1-12之间！");
+                return;
+            }
+
+            int maxDays = AuxFunctions.getDayOfMonth(month, year);
+            if (day < 1 || day > maxDays) {
+                calculationResult.setText(String.format("错误：%d年%d月的日期必须在1-%d之间！", year, month, maxDays));
+                return;
+            }
+
+            Date solarDate = new Date(year, month, day);
+            LunarDate lunarDate = LunarCalendar.solarToLunar(solarDate);
+
+            lunarResult.setText(String.format("公历日期：%d年%d月%d日\n\n转换结果：\n%s",
+                    year, month, day, lunarDate));
+
+        } catch (NumberFormatException e) {
+            calculationResult.setText("错误：请输入有效的数字！");
+        } catch (Exception e) {
+            calculationResult.setText("错误：" + e.getMessage());
         }
     }
 
