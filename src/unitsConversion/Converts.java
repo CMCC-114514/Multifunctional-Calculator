@@ -46,6 +46,12 @@ public class Converts {
             "摄氏度(C)", "华氏度(F)", "开尔文(K)"
     };
 
+    // 数据存储单位数组
+    public static final String[] STORAGE_UNITS = {
+            "位(bit)", "字节(Byte)", "千字节(KB)",
+            "兆字节(MB)", "吉字节(GB)", "太字节(TB)", "拍字节(PB)"
+    };
+
     //换算方法1：长度换算
     public static double[] length(byte choose, double num) {
 
@@ -110,5 +116,19 @@ public class Converts {
 
         //计算结果
         return new double[]{std, std*1.8+32, std+273.15};
+    }
+
+    //换算方法8：数据存储单位换算
+    public static double[] storage(byte choose, double num) {
+        //将选择的单位转化为标准单位
+        double std = AuxFunctions.getStorageStd(choose, num);
+
+        //计算结果
+        double[] result = new double[STORAGE_UNITS.length];
+        result[0] = std * 8;
+        for (int i = 1; i < result.length; i++) {
+            result[i] = std / Math.pow(1024, i - 1);
+        }
+        return result;
     }
 }

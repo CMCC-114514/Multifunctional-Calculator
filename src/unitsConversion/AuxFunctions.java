@@ -100,9 +100,20 @@ public class AuxFunctions {
     public static double getTemperatureStd(byte choose, double num) {
         double std = 0;
         switch (choose) {
-            case 1 -> std = num;
-            case 2 -> std = (num - 32) / 1.8;
-            case 3 -> std = num - 273.15;
+            case 1 -> std = num;                //摄氏度
+            case 2 -> std = (num - 32) / 1.8;   //华氏度
+            case 3 -> std = num - 273.15;       //开尔文
+        }
+        return std;
+    }
+
+    //存储空间标准单位
+    public static double getStorageStd(byte choose, double num) {
+        double std = 0;
+        if (choose == 1) {
+            std = num / 8;    //bit
+        } else {
+            std = num * Math.pow(1024, choose - 2);  //其他
         }
         return std;
     }
